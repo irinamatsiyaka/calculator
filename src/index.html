@@ -1,0 +1,51 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="styles.css" />
+    <title>Calculator</title>
+  </head>
+  <body>
+    <div class="calculator">
+      <div class="header">
+        <div class="traffic-lights">
+          <span class="circle red"></span>
+          <span class="circle yellow"></span>
+          <span class="circle green"></span>
+        </div>
+      </div>
+      <div id="displayContainer">
+        <div id="display">0</div>
+      </div>
+
+      <div class="buttons">
+        <button onclick="clearDisplay()">AC</button>
+        <button onclick="toggleSign()">&plusmn;</button>
+        <button onclick="percentInput()">%</button>
+        <button onclick="setOperator('/')">&divide;</button>
+
+        <button onclick="addNumber('7')">7</button>
+        <button onclick="addNumber('8')">8</button>
+        <button onclick="addNumber('9')">9</button>
+        <button onclick="setOperator('*')">&times;</button>
+
+        <button onclick="addNumber('4')">4</button>
+        <button onclick="addNumber('5')">5</button>
+        <button onclick="addNumber('6')">6</button>
+        <button onclick="setOperator('-')">-</button>
+
+        <button onclick="addNumber('1')">1</button>
+        <button onclick="addNumber('2')">2</button>
+        <button onclick="addNumber('3')">3</button>
+        <button onclick="setOperator('+')">+</button>
+
+        <button class="zero" onclick="addNumber('0')">0</button>
+        <button onclick="addNumber('.')">.</button>
+        <button onclick="calculateResult()">=</button>
+      </div>
+    </div>
+    <script src="index.html"></script>
+    <script src="adjustFontSize.js"></script>
+  </body>
+</html>
