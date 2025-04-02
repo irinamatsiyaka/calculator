@@ -162,6 +162,14 @@ function percentInput() {
   }
 }
 
+const themeSelector = document.getElementById('themeSelector');
+themeSelector.addEventListener('change', (e) => {
+  const theme = e.target.value; // "default", "warm", "cool"
+  const calculator = document.querySelector('.calculator');
+  calculator.classList.remove('theme-default', 'theme-warm', 'theme-cool');
+  calculator.classList.add(`theme-${theme}`);
+});
+
 window.addNumber = addNumber;
 window.setOperator = setOperator;
 window.calculateResult = calculateResult;
