@@ -162,7 +162,6 @@ body {
   grid-column: span 2 / span 2;
 }
 
-/* Стили для выпадающего списка выбора темы */
 .color-selector {
   height: 24px;
   line-height: 24px;
@@ -194,56 +193,45 @@ body {
   color: #fff;
 }
 
-/* -- DEFAULT THEME -- */
 .calculator.theme-default {
-  /* Фон калькулятора */
   background-color: #535353;
 }
 
-/* Верхняя строка: первые 3 кнопки */
 .calculator.theme-default .buttons button:nth-child(-n + 3) {
   background-color: #646464;
 }
-/* Правая колонка: каждая 4-я кнопка */
 .calculator.theme-default .buttons button:nth-child(4n) {
   background-color: #ff9e0b;
 }
-/* Остальные кнопки */
 .calculator.theme-default .buttons button {
-  background-color: #7d7d7d; /* общая */
+  background-color: #7d7d7d;
   border-color: #535353;
 }
-/* Дисплей */
 .calculator.theme-default #displayContainer {
   background-color: #535353;
 }
 .calculator.theme-default #display {
-  color: #fff; /* белый текст */
+  color: #fff;
 }
 
-/* -- WARM THEME -- */
 .calculator.theme-warm {
-  background-color: #d35400; /* фон всего калькулятора */
+  background-color: #d35400;
 }
-/* Верхняя строка (первые 3 кнопки) */
 .calculator.theme-warm .buttons button:nth-child(-n + 3) {
   background-color: #e67e22;
   border-color: #d35400;
   color: #fff;
 }
-/* Правая колонка (каждая 4-я кнопка) */
 .calculator.theme-warm .buttons button:nth-child(4n) {
   background-color: #f39c12;
   border-color: #d35400;
   color: #fff;
 }
-/* Остальные кнопки */
 .calculator.theme-warm .buttons button {
   background-color: #e67e22;
   border-color: #d35400;
   color: white;
 }
-/* Дисплей */
 .calculator.theme-warm #displayContainer {
   background-color: #e74c3c;
 }
@@ -251,29 +239,24 @@ body {
   color: #fff;
 }
 
-/* -- COOL THEME -- */
 .calculator.theme-cool {
   background-color: #2980b9;
 }
-/* Верхняя строка */
 .calculator.theme-cool .buttons button:nth-child(-n + 3) {
   background-color: #3498db;
   border-color: #2980b9;
   color: #fff;
 }
-/* Правая колонка */
 .calculator.theme-cool .buttons button:nth-child(4n) {
   background-color: #9b59b6;
   border-color: #8e44ad;
   color: #fff;
 }
-/* Остальные кнопки */
 .calculator.theme-cool .buttons button {
   background-color: #3498db;
   border-color: #2980b9;
   color: #fff;
 }
-/* Дисплей */
 .calculator.theme-cool #displayContainer {
   background-color: #0c123c;
 }
