@@ -13,6 +13,17 @@ function updateDisplay() {
 }
 
 function addNumber(value) {
+  const lastNum = getLastNumber(expression);
+
+  if (value === '.' && lastNum.includes('.')) {
+    return;
+  }
+  if (newNumber === '' && value === '.') {
+    newNumber = '0.';
+    expression += '0.';
+    updateDisplay();
+    return;
+  }
   if (newNumber === '' && value === '0') {
     newNumber = '0';
     expression += '0';
@@ -24,21 +35,22 @@ function addNumber(value) {
   }
   if (newNumber === '0' && value !== '.') {
     newNumber = '';
-    if (expression.slice(-1) === '0') {
+    if (expression.endsWith('0')) {
       expression = expression.slice(0, -1);
     }
-  }
-  if (newNumber === '' && value === '.') {
-    newNumber = '0';
-    expression += '0';
-  }
-  if (value === '.' && newNumber.includes('.')) {
-    return;
   }
 
   newNumber += value;
   expression += value;
   updateDisplay();
+}
+
+function getLastNumber(expr) {
+  let idx = findLastRealOperator(expr);
+  if (idx === -1) {
+    return expr; // если операторов нет, всё выражение — число
+  }
+  return expr.slice(idx + 1);
 }
 
 function setOperator(op) {
@@ -104,19 +116,8 @@ function toggleSign() {
     } else {
       newNumber = '-' + newNumber;
     }
-    let lastOpIndex = expression.lastIndexOf('+');
-    let idx = expression.lastIndexOf('-');
-    if (idx > lastOpIndex) {
-      lastOpIndex = idx;
-    }
-    idx = expression.lastIndexOf('*');
-    if (idx > lastOpIndex) {
-      lastOpIndex = idx;
-    }
-    idx = expression.lastIndexOf('/');
-    if (idx > lastOpIndex) {
-      lastOpIndex = idx;
-    }
+
+    let lastOpIndex = findLastRealOperator(expression);
 
     if (lastOpIndex >= 0) {
       expression = expression.slice(0, lastOpIndex + 1) + newNumber;
@@ -129,6 +130,28 @@ function toggleSign() {
     expression = current.toString();
     updateDisplay();
   }
+}
+
+function findLastRealOperator(expr) {
+  let plusIndex = expr.lastIndexOf('+');
+  let minusIndex = expr.lastIndexOf('-');
+  let mulIndex = expr.lastIndexOf('*');
+  let divIndex = expr.lastIndexOf('/');
+
+  if (minusIndex === 0) {
+    minusIndex = -1;
+  }
+
+  let indexes = [plusIndex, minusIndex, mulIndex, divIndex];
+
+  let maxIndex = indexes[0];
+  for (let i = 1; i < indexes.length; i++) {
+    if (indexes[i] > maxIndex) {
+      maxIndex = indexes[i];
+    }
+  }
+
+  return maxIndex;
 }
 
 function percentInput() {
