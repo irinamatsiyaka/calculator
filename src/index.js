@@ -5,6 +5,7 @@ let expression = '';
 let newNumber = '';
 let current = null;
 let lastOperator = null;
+let justCalculated = false;
 const display = document.getElementById('display');
 
 function updateDisplay() {
@@ -13,9 +14,25 @@ function updateDisplay() {
 }
 
 function addNumber(value) {
-  const lastNum = getLastNumber(expression);
+  if (justCalculated) {
+    if (/^\d$/.test(value)) {
+      expression = value;
+      newNumber = value;
+      current = null;
+      lastOperator = null;
+      justCalculated = false;
+      updateDisplay();
+      return;
+    }
 
-  if (value === '.' && lastNum.includes('.')) {
+    if (value === '.') {
+      return;
+    }
+
+    return;
+  }
+
+  if (value === '.' && newNumber.includes('.')) {
     return;
   }
   if (newNumber === '' && value === '.') {
@@ -39,22 +56,24 @@ function addNumber(value) {
       expression = expression.slice(0, -1);
     }
   }
-
   newNumber += value;
   expression += value;
   updateDisplay();
 }
 
-function getLastNumber(expr) {
-  let idx = findLastRealOperator(expr);
-  if (idx === -1) {
-    return expr; // если операторов нет, всё выражение — число
-  }
-  return expr.slice(idx + 1);
+function calculateResult() {
+  if (newNumber === '' || lastOperator === null) return;
+  current = calculation(current, lastOperator, parseFloat(newNumber));
+  expression = current.toString();
+  newNumber = '';
+  lastOperator = null;
+  justCalculated = true;
+
+  updateDisplay();
 }
 
 function setOperator(op) {
-  if (['+', '-', '/', '*'].includes(expression.slice(-1))) {
+  if (['+', '-', '*', '/'].includes(expression.slice(-1))) {
     expression = expression.slice(0, -1);
   }
   if (newNumber === '' && current === null) {
@@ -63,7 +82,7 @@ function setOperator(op) {
   if (newNumber !== '') {
     if (current === null) {
       current = parseFloat(newNumber);
-    } else if (current !== null) {
+    } else {
       current = calculation(current, lastOperator, parseFloat(newNumber));
     }
   }
@@ -71,31 +90,24 @@ function setOperator(op) {
   lastOperator = op;
   newNumber = '';
   expression += op;
-  updateDisplay();
-}
-function calculateResult() {
-  if (newNumber === '' || lastOperator === null) return;
-  current = calculation(current, lastOperator, parseFloat(newNumber));
-  expression = current.toString();
-  newNumber = '';
-  lastOperator = null;
+  justCalculated = false;
   updateDisplay();
 }
 
 function calculation(a, operator, b) {
   switch (operator) {
     case '+':
-      return a + b;
+      return parseFloat((a + b).toFixed(12));
     case '-':
-      return a - b;
+      return parseFloat((a - b).toFixed(12));
+    case '*':
+      return a * b;
     case '/':
       if (b === 0) {
         alert('Деление на ноль невозможно!');
         return a;
       }
       return a / b;
-    case '*':
-      return a * b;
     default:
       return b;
   }
@@ -106,6 +118,7 @@ function clearDisplay() {
   newNumber = '';
   current = null;
   lastOperator = null;
+  justCalculated = false;
   updateDisplay();
 }
 
@@ -116,18 +129,18 @@ function toggleSign() {
     } else {
       newNumber = '-' + newNumber;
     }
-
-    let lastOpIndex = findLastRealOperator(expression);
-
-    if (lastOpIndex >= 0) {
-      expression = expression.slice(0, lastOpIndex + 1) + newNumber;
+    let idx = findLastRealOperator(expression);
+    if (idx >= 0) {
+      expression = expression.slice(0, idx + 1) + newNumber;
     } else {
       expression = newNumber;
     }
+    justCalculated = false;
     updateDisplay();
   } else if (current !== null) {
     current = -current;
     expression = current.toString();
+    justCalculated = true;
     updateDisplay();
   }
 }
@@ -143,55 +156,33 @@ function findLastRealOperator(expr) {
   }
 
   let indexes = [plusIndex, minusIndex, mulIndex, divIndex];
-
   let maxIndex = indexes[0];
   for (let i = 1; i < indexes.length; i++) {
     if (indexes[i] > maxIndex) {
       maxIndex = indexes[i];
     }
   }
-
   return maxIndex;
 }
 
 function percentInput() {
   if (newNumber !== '') {
     newNumber = (parseFloat(newNumber) / 100).toString();
-
-    let lastOpIndex = expression.lastIndexOf('+');
-    let idx = expression.lastIndexOf('-');
-    if (idx > lastOpIndex) {
-      lastOpIndex = idx;
-    }
-    idx = expression.lastIndexOf('*');
-    if (idx > lastOpIndex) {
-      lastOpIndex = idx;
-    }
-    idx = expression.lastIndexOf('/');
-    if (idx > lastOpIndex) {
-      lastOpIndex = idx;
-    }
-
-    if (lastOpIndex >= 0) {
-      expression = expression.slice(0, lastOpIndex + 1) + newNumber;
+    let idx = findLastRealOperator(expression);
+    if (idx >= 0) {
+      expression = expression.slice(0, idx + 1) + newNumber;
     } else {
       expression = newNumber;
     }
+    justCalculated = false;
     updateDisplay();
   } else if (current !== null) {
     current = current / 100;
     expression = current.toString();
+    justCalculated = true;
     updateDisplay();
   }
 }
-
-const themeSelector = document.getElementById('themeSelector');
-themeSelector.addEventListener('change', (e) => {
-  const theme = e.target.value;
-  const calculator = document.querySelector('.calculator');
-  calculator.classList.remove('theme-default', 'theme-warm', 'theme-cool');
-  calculator.classList.add(`theme-${theme}`);
-});
 
 window.addNumber = addNumber;
 window.setOperator = setOperator;
