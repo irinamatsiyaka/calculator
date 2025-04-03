@@ -9,7 +9,7 @@
 - Open `dist/index.html` in your browser.
 
 ## Deployment
-[Deploy the application](https://matsiyakainnowise.tiiny.site)
+[Deployed application](https://matsiyakainnowise.tiiny.site)
 
 ## Folder Structure
 - **src/**  
